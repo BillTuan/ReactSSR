@@ -6,9 +6,11 @@ module.exports = {
         loader: "babel-loader",
         exclude: /node_modules/,
         options: {
+          plugins: ["transform-class-properties"],
           presets: [
-            "react",
+            "es2015",
             "stage-0",
+            "react",
             ["env", { targets: { browsers: ["last 2 versions"] } }]
           ]
         }

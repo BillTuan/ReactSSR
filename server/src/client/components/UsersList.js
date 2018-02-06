@@ -1,8 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 import { fetchUsers } from "../actions";
 
 class UsersList extends Component {
+  static propTypes = {
+    fetchUsers: PropTypes.func.isRequired,
+    users: PropTypes.arrayOf({
+      name: PropTypes.string.isRequired,
+      id: PropTypes.number.isRequired
+    }).isRequired
+  };
+
   componentDidMount() {
     this.props.fetchUsers();
   }
@@ -14,7 +23,7 @@ class UsersList extends Component {
     return (
       <div>
         Here us a big list of users:
-        <ul>{this.renderUsers}</ul>
+        <ul>{this.renderUsers()}</ul>
       </div>
     );
   }
