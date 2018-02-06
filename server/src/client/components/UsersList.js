@@ -6,10 +6,7 @@ import { fetchUsers } from "../actions";
 class UsersList extends Component {
   static propTypes = {
     fetchUsers: PropTypes.func.isRequired,
-    users: PropTypes.arrayOf({
-      name: PropTypes.string.isRequired,
-      id: PropTypes.number.isRequired
-    }).isRequired
+    users: PropTypes.arrayOf(PropTypes.object).isRequired
   };
 
   componentDidMount() {
@@ -29,4 +26,9 @@ class UsersList extends Component {
   }
 }
 
+function loadData(store) {
+  return store.dispatch(fetchUsers());
+}
+
+export { loadData };
 export default connect(({ users }) => ({ users }), { fetchUsers })(UsersList);

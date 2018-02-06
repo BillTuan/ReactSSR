@@ -9,9 +9,13 @@ const app = express();
 
 app.use(express.static("public"));
 
-app.get("*", (req, res) => {
+app.get("*", async (req, res) => {
   const store = createStore();
-  console.log(matchRoutes(Routes, req.path));
+  await Promise.all(
+    matchRoutes(Routes, req.path).map(
+      ({ route }) => (route.loadData ? route.loadData(store) : null)
+    )
+  );
   res.send(renderer(req, store));
 });
 
