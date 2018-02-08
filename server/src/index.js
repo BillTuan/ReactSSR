@@ -8,10 +8,11 @@ import createStore from "./helpers/createStore";
 
 const app = express();
 
+/* eslint no-param-reassign: 0 */
 app.use(
   "/api",
   proxy("http://localhost:5001", {
-    proxyResOptDecorator(opts) {
+    proxyReqOptDecorator(opts) {
       opts.headers["x-forwarded-host"] = "localhost:5000";
       return opts;
     }
