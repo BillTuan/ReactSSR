@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { fetchAdmins } from "../actions";
+import requireAuth from "../components/hocs/requireAuth";
 
 class AdminsList extends Component {
   static propTypes = {
@@ -25,6 +26,8 @@ class AdminsList extends Component {
 }
 
 export default {
-  component: connect(({ admins }) => ({ admins }), { fetchAdmins })(AdminsList),
+  component: connect(({ admins }) => ({ admins }), { fetchAdmins })(
+    requireAuth(AdminsList)
+  ),
   loadData: ({ dispatch }) => dispatch(fetchAdmins())
 };

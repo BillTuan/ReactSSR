@@ -38,6 +38,9 @@ app.get("*", async (req, res) => {
 
   const context = {};
   const content = renderer(req, store, context);
+  if (context.url) {
+    res.redirect(301, context.url);
+  }
   context.notFound ? res.status(404).send(content) : res.send(content);
 });
 
