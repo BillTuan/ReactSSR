@@ -25,10 +25,17 @@ app.use(express.static("public"));
 app.get("*", async (req, res) => {
   const store = createStore(req);
   await Promise.all(
-    matchRoutes(Routes, req.path).map(
-      ({ route }) => (route.loadData ? route.loadData(store) : null)
-    )
+    matchRoutes(Routes, req.path)
+      .map(({ route }) => (route.loadData ? route.loadData(store) : null))
+      .map(promise => {
+        if (promise) {
+          return new Promise(resolve => {
+            promise.then(resolve).catch(resolve);
+          });
+        }
+      })
   );
+
   const context = {};
   const content = renderer(req, store, context);
   context.notFound ? res.status(404).send(content) : res.send(content);
