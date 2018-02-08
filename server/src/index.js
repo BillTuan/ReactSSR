@@ -21,6 +21,7 @@ app.use(
 
 app.use(express.static("public"));
 
+/* eslint no-unused-expressions: 0 */
 app.get("*", async (req, res) => {
   const store = createStore(req);
   await Promise.all(
@@ -28,7 +29,9 @@ app.get("*", async (req, res) => {
       ({ route }) => (route.loadData ? route.loadData(store) : null)
     )
   );
-  res.send(renderer(req, store));
+  const context = {};
+  const content = renderer(req, store, context);
+  context.notFound ? res.status(404).send(content) : res.send(content);
 });
 
 const PORT = process.env.NODE_ENV || 5000;
